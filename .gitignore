@@ -1,3 +1,5 @@
+node_modules
+Ds.Store
 # Logs
 logs
 *.log
