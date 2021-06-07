@@ -4,11 +4,26 @@ class Query {
   constructor(connection) {
     this.connection = connection;
   }
-  findDepartments(){
-      return this.connection.promise().query(
-         'SELECT * FROM department;'
-      )
+  findDepartments() {
+    return this.connection.promise().query("SELECT * FROM department;");
   }
+  createDepartment(department) {
+    return this.connection
+      .promise()
+      .query("INSERT INTO department SET ?", department);
+  }
+
+  findRole(){
+      return this.connection.promise().query("SELECT * FROM roles;");
+  }
+
+  createroles(roles) {
+    return this.connection
+      .promise()
+      .query("INSERT INTO roles SET ?", roles);
+  }
+
+
 }
 
-module.exports = new Query(connection)
+module.exports = new Query(connection);

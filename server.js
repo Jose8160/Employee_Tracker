@@ -1,45 +1,45 @@
-const inquirer = require('inquirer');
-const db = require('./db/index')
+const inquirer = require("inquirer");
+const db = require("./db/index");
 
-  const runSearch = () => {
-    inquirer
-      .prompt({
-        name: 'action',
-        type: 'rawlist',
-        message: 'What would you like to do?',
-        choices: [
-        //   'add departments',
-        //   'add roles',
+const runSearch = () => {
+  inquirer
+    .prompt({
+      name: "action",
+      type: "rawlist",
+      message: "What would you like to do?",
+      choices: [
+        "add department",
+        "add roles",
         //   'add employees',
-          'view departments',
-        //   'view roles',
+        "view departments",
+        "view roles",
         //   'view employees',
         //   'update departments',
         //   'update roles',
         //   'update employees',
-        ],
-      })
-      .then((answer) => {
-        switch (answer.action) {
-        //   case 'add department':
-        //     artistSearch();
-        //     break;
-  
-        //   case 'add roles':
-        //     multiSearch();
-        //     break;
-  
+      ],
+    })
+    .then((answer) => {
+      switch (answer.action) {
+        case "add department":
+          addDepartment();
+          break;
+
+        case "add roles":
+          addrole();
+          break;
+
         //   case 'add employees':
         //     rangeSearch();
         //     break;
-  
-          case 'view department':
-            songSearch();
-            break;
-  
-        //   case 'view role':
-        //     songAndAlbumSearch();
-        //     break;
+
+        case "view departments":
+          viewDepartments();
+          break;
+
+        case "view roles":
+          viewRole();
+          break;
 
         //     case 'view employee':
         //     songAndAlbumSearch();
@@ -57,30 +57,68 @@ const db = require('./db/index')
         //     songAndAlbumSearch();
         //     break;
 
-  
-          default:
-            console.log(`Invalid action: ${answer.action}`);
-            break;
-        }
-      });
-  };
-  
-  const artistSearch = () => {
-    inquirer
-      .prompt({
-        name: 'artist',
-        type: 'input',
-        message: 'What artist would you like to search for?',
-      })
-      .then((answer) => {
-        const query = 'SELECT position, song, year FROM top5000 WHERE ?';
-        connection.query(query, { artist: answer.artist }, (err, res) => {
-          res.forEach(({ position, song, year }) => {
-            console.log(
-              `Position: ${position} || Song: ${song} || Year: ${year}`
-            );
-          });
-          runSearch();
-        });
-      });
-  };
+        default:
+          console.log(`Invalid action: ${answer.action}`);
+          break;
+      }
+    });
+};
+// view departments from db
+function viewDepartments() {
+  db.findDepartments()
+    .then(([rows]) => {
+      let departments = rows;
+      console.table(departments);
+    })
+    .then(() => runSearch());
+}
+// add departments to db
+
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        name: "name",
+        message: "What is the name of department?",
+      },
+    ])
+    .then((answer) => {
+      let name = answer;
+      db.createDepartment(name)
+        .then(() => console.log(`added ${name.name} to db`))
+        .then(() => runSearch());
+    });
+}
+// view roles from db
+function viewRole() {
+  db.findRole()
+    .then(([rows]) => {
+      let roles = rows;
+      console.table(roles);
+    })
+    .then(() => runSearch());
+}
+
+// add roles to db
+
+function addrole() {
+  inquirer
+    .prompt([
+      {
+        name: "name",
+        message: "What is the name of role?",
+      },
+    ])
+    .then((answer) => {
+      let name = answer;
+      db.createDepartment(name)
+        .then(() => console.log(`added ${name.name} to db`))
+        .then(() => runSearch());
+    });
+}
+
+
+
+
+
+runSearch();
