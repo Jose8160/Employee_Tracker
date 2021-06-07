@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const { findEmployee } = require("./db/index");
 const db = require("./db/index");
 
 const runSearch = () => {
@@ -10,10 +11,10 @@ const runSearch = () => {
       choices: [
         "add department",
         "add roles",
-        //   'add employees',
+        "add employees",
         "view departments",
         "view roles",
-        //   'view employees',
+        "view employees",
         //   'update departments',
         //   'update roles',
         //   'update employees',
@@ -29,9 +30,9 @@ const runSearch = () => {
           addrole();
           break;
 
-        //   case 'add employees':
-        //     rangeSearch();
-        //     break;
+        case "add employees":
+          addEmployee();
+          break;
 
         case "view departments":
           viewDepartments();
@@ -41,9 +42,9 @@ const runSearch = () => {
           viewRole();
           break;
 
-        //     case 'view employee':
-        //     songAndAlbumSearch();
-        //     break;
+        case "view employees":
+          viewEmployee();
+          break;
 
         //     case 'update departments':
         //     songAndAlbumSearch();
@@ -117,8 +118,31 @@ function addrole() {
     });
 }
 
+// view employee db
 
+function viewEmployee() {
+  db.findEmployee()
+    .then(([rows]) => {
+      let employee = rows;
+      console.table(employee);
+    })
+    .then(() => runSearch());
+}
 
-
+function addEmployee() {
+  inquirer
+    .prompt([
+      {
+        name: "name",
+        message: "What is the name of employee?",
+      },
+    ])
+    .then((answer) => {
+      let name = answer;
+      db.createEmployees(name)
+        .then(() => console.log(`added ${name.name} to db`))
+        .then(() => runSearch());
+    });
+}
 
 runSearch();

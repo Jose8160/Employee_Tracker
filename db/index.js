@@ -13,17 +13,23 @@ class Query {
       .query("INSERT INTO department SET ?", department);
   }
 
-  findRole(){
-      return this.connection.promise().query("SELECT * FROM roles;");
+  findRole() {
+    return this.connection.promise().query("SELECT * FROM roles;");
   }
 
   createroles(roles) {
-    return this.connection
-      .promise()
-      .query("INSERT INTO roles SET ?", roles);
+    return this.connection.promise().query("INSERT INTO roles SET ?", roles);
   }
 
+  findEmployee() {
+    return this.connection.promise().query("SELECT * FROM employee;");
+  }
 
+  createEmployees(employee) {
+    return this.connection
+      .promise()
+      .query("INSERT INTO employees SET ?", employee);
+  }
 }
 
 module.exports = new Query(connection);
