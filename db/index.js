@@ -30,6 +30,15 @@ class Query {
       .promise()
       .query("INSERT INTO employees SET ?", employee);
   }
+
+  updateRole(role_id, id) {
+    return this.connection.query(
+      `UPDATE employee
+        SET role_id = ? 
+        WHERE id = ?;`,
+      [role_id, id]
+    );
+  }
 }
 
 module.exports = new Query(connection);

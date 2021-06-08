@@ -16,7 +16,7 @@ const runSearch = () => {
         "view roles",
         "view employees",
         //   'update departments',
-        //   'update roles',
+        "update roles",
         //   'update employees',
       ],
     })
@@ -54,9 +54,9 @@ const runSearch = () => {
         //     songAndAlbumSearch();
         //     break;
 
-        //     case 'update employee':
-        //     songAndAlbumSearch();
-        //     break;
+        case "update employee":
+          updateRole();
+          break;
 
         default:
           console.log(`Invalid action: ${answer.action}`);
